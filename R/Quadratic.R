@@ -16,8 +16,8 @@ qucl=function(x,A,b,c){
 #C is the inverse matrix from \Cref{th:compressed quadratic class equivalence}
 #a is the norm-constraint
 
-qproj=function(X,a,C=diag(ncol(X))){
-  A=CVXR::Variable(k,k,symmetric=T)
+qproj=function(X,a,C=diag(nrow=nrow(X),ncol=ncol(X))){
+  A=CVXR::Variable(nrow(X),ncol(X),symmetric=T)
   obj=CVXR::cvxr_norm(X-A,'nuc') #any norm can be used
   constr=list(CVXR::cvxr_norm(C%*%A%*%C,'nuc')<=a) #any norm can be used
   prob=CVXR::Problem(CVXR::Minimize(obj),c(constr))
