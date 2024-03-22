@@ -1,0 +1,13 @@
+#training and test error of quadratic classifier measured with 0-1 loss
+#sgd parameters: epochs=10, learning rate=1, smooth hinge loss gamma=.5, train/test ratio=80/20
+#d is the ambient dimension
+#n is the sample size
+#k is the projection dimension
+#r is the algebraic dimension
+#s is the parameter s in (Latorre et al, 2021) that determines the normalisation
+#B is the rank of the boundary that determines the labels in the ambient space
+#l is 1: random labels, 2:labels determined by matrix
+#train is the training error
+#test is the out-of-sample test error
+
+d n set k amean asd bmean bsd
