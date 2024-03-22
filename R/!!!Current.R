@@ -17,12 +17,16 @@ ytest=y[-s] #test labels
 
 #iterations
 emperr=NULL
+runtime=NULL
 for(k in (1:10)*5){
   err=0
+  tim=0
   for(i in 1:t){
     B=matrix(rnorm(d*k),k)/sqrt(k) #projection matrix
+    TIME=Sys.time()
     Q=quadsgd(xtrain,ytrain,B) #train the quadratic classifier
-    err=err+mean(qucl(xtest%*%t(B),Q[[1]],Q[[2]],Q[[3]])==ytest)/t #mean 0-1 empirical error
+    runtime=runtime+(Sys.time()-TIME)/t #averge runtime
+    err=err+mean(qucl(xtest%*%t(B),Q[[1]],Q[[2]],Q[[3]])==ytest)/t #average 0-1 empirical error
   }
   cat('Only',t-i,'iterations remain.\n')
   write.table(cbind(d=d,n=n,k=k,test=err),
