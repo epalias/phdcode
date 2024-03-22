@@ -25,5 +25,6 @@ for(k in (1:10)*5){
     err=err+mean(qucl(xtest%*%t(B),Q[[1]],Q[[2]],Q[[3]])==ytest)/t #mean 0-1 empirical error
   }
   cat('Only',t-i,'iterations remain.\n')
-  emperr=c(emperr,err) #mean empirical error
+  write.table(cbind(d=d,n=n,k=k,test=err),
+  row.names=F,col.names=F,quote=F,append=T,file="/rds/homes/e/exp093/phdcode/R/results.txt")
 }
