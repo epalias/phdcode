@@ -5,10 +5,11 @@
 #A is the matrix in the decision boundary
 #b is the vector in the decision boundary
 #c is the constant in the decision boundary
-#returns the vector of labels for each instance either -1 or 1
+#returns the vector of values according to quadratic classification
+#use sign(qucl(,,,)) for the label prediction
 
-qucl=function(x,A,b,c){
-  c(sign(apply(x*x%*%A,1,sum)+x%*%b+c))
+qucl=function(x,A=diag(0,ncol(x)),b=rep(0,ncol(x)),c=0){
+  c(apply(x*x%*%A,1,sum)+x%*%b+c)
 }
 
 #convex optimization for projection onto convex set using CVXR
@@ -54,19 +55,20 @@ smhingeder=function(x,g=.5){
 quadsgd=function(x,y,B,g=.5,epoch=2,alpha=1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),c=0,a=3){
   C=svd(B)$u%*%diag(1/svd(B)$d)%*%t(svd(B)$u) #matrix that skews quadratic class; or C=diag(nrow(B))
   x=x%*%t(B) #compress set
+  error=NULL
   for(i in 1:epoch){
     for(j in 1:nrow(x)){
-      L=alpha*smhingeder(y[j]*c(x[j,,drop=F]%*%A%*%x[j,]+b%*%x[j,]+c),g)
+      L=alpha*smhingeder(y[j]*qucl(x[j,],A,b,c),g)
       A=A-L*y[j]*x[j,]%*%t(x[j,]) #update matrix
       b=b-L*y[j]*x[j,] #update vector; remove line to train a homogeneous classifier
       c=c-L*y[j] #update constant; remove line to train a homogeneous classifier
-      nor=npmr::nuclear(C%*%A%*%C) #base::norm(C%*%A%*%C,'') other norms; remove C for no skew
+      nor=npmr::nuclear(C%*%A%*%C) #base::norm(C%*%A%*%C,'') for other norms; remove C for no skew
       if(nor>a){ #if A is out of feasible set
-        TIME=Sys.time() #note the time
         A=qproj(A,a,C) #project A onto the feasible class and print the time; remove C for no skew
-        cat('Epoch',i,'index',j,'had norm',nor,'and cost',Sys.time()-TIME,'sec\n')
+        cat('Epoch',i,'index',j,'had norm',nor,'\n')
       }
+      error=c(error,sum(smhinge(y*qucl(x,A,b,c),g))/nrow(x)) #record error
     }
   }
-  list(A=A,b=b,c=c) #output trained quadratic classifier
+  list(A=A,b=b,c=c,error=error) #quadratic classifier and sequence of errors
 }
