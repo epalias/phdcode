@@ -70,20 +70,3 @@ quadsgd=function(x,y,B,g=.5,epoch=2,alpha=1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),c
   }
   list(A=A,b=b,c=c) #output trained quadratic classifier
 }
-
-###parameters
-d=1e+2 #ambient dimension
-t=1e+1 #number of random matrices for each projection dimension
-n=1e+3 #number of points
-x=uniformly::runif_on_sphere(n,d,1) #instances in ambient space
-A0=matrix(rnorm(d^2),d) #decision boundary matrix; change rank for low-quadratic dimension
-b0=rep(0,d) #decision boundary vector
-c0=0 #decision boundary constant
-y=qucl(x,A0,b0,c0) #original labels according to quadratic decision rule
-table(y) #table of labels
-k=10 #projection dimension
-B=matrix(rnorm(d*k),k)/sqrt(k) #projection matrix
-
-#check the quality
-Q=quadsgd(x,y,B) #train the quadratic classifier
-mean(qucl(x%*%t(B),Q[[1]],Q[[2]],Q[[3]])==y) #mean 0-1 empirical error
