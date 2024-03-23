@@ -70,6 +70,9 @@ smhingeder=function(x,g=.5){
 #' @param c constant with which to initialise SGD
 #' @param a norm-constraint for the matrix in the quadratic boundary
 #' @param nor which norm to constrain
+#' 
+#' @return a list of matrix, vector, constant and empirical error
+#' @export
 
 quadsgd=function(x,y,B=diag(ncol(x)),g=.5,epoch=2,alpha=1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),c=0,a=3,nor=c('nuc',1,2,'inf','fro')){
   C=svd(B)$u%*%diag(1/svd(B)$d)%*%t(svd(B)$u) #matrix that skews quadratic class; or C=diag(nrow(B))
