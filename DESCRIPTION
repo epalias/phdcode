@@ -1,0 +1,16 @@
+Package: phdcode
+Title: Code for PhD thesis
+Version: 0.9.0
+Authors@R: 
+    person("Efstratios", "Palias", email = "exp093@student.bham.ac.uk", role = c("aut", "cre"))
+Description: Several functions for classification in compressed settings using quadratic models.
+Depends: R (>= 3.4.0)
+Imports: 
+    Surrogate
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
