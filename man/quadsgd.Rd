@@ -42,7 +42,15 @@ quadsgd(
 \item{nor}{which norm to constrain}
 }
 \value{
-a list of matrix, vector, constant and empirical error
+list containing the following elements
+
+\strong{\code{A}} matrix in the trained quadratic classifier
+
+\strong{\code{b}} vector in the trained quadratic classifier
+
+\strong{\code{c}} constant in the trained quadratic classifier
+
+\strong{\code{error}} empirical error of the trained quadratic classifier
 }
 \description{
 Train quadratic classifier under projection with SGD
