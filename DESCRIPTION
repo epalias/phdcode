@@ -6,7 +6,15 @@ Authors@R:
 Description: Several functions for classification in compressed settings using quadratic models.
 Depends: R (>= 3.4.0)
 Imports: 
-    Surrogate
+    Surrogate,
+    mvtnorm,
+    dbscan,
+    mlpack,
+    stats,
+    class,
+    pracma,
+    CVXR,
+    npmr
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

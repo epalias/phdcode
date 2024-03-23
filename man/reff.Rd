@@ -2,20 +2,33 @@
 % Please edit documentation in R/QDA.R
 \name{reff}
 \alias{reff}
-\title{sample uniformly \code{d} eigenvalues given largest eigenvalue and effective rank}
+\title{Sample uniformly \code{d} eigenvalues given largest eigenvalue and effective rank.}
 \usage{
 reff(d, l, r)
 }
 \arguments{
-\item{d}{The number of dimensions.}
+\item{d}{number of dimensions}
 
-\item{l}{The largest eigenvalue.}
+\item{l}{largest eigenvalue}
 
-\item{r}{The desired effective rank.}
+\item{r}{desired effective rank}
 }
 \value{
-Vector of eigenvalues with desired effective rank.
+vector of eigenvalues with desired effective rank
 }
 \description{
-sample uniformly \code{d} eigenvalues given largest eigenvalue and effective rank
+Sample uniformly \code{d} eigenvalues given largest eigenvalue and effective rank.
+}
+\examples{
+#generates all ones
+
+reff(5,1,5) 
+
+#generates randomly
+
+reff(5,1,3)
+
+#generates all-but-one zeros
+
+reff(5,1,1)
 }
