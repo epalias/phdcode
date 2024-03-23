@@ -41,6 +41,9 @@ quadsgd(
 
 \item{nor}{which norm to constrain}
 }
+\value{
+a list of matrix, vector, constant and empirical error
+}
 \description{
 Train quadratic classifier under projection with SGD
 }
