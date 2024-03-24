@@ -14,7 +14,9 @@ Imports:
     class,
     pracma,
     CVXR,
-    npmr
+    npmr,
+    Rdpack (>= 0.7)
+RdMacros: Rdpack
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

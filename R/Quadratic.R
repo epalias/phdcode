@@ -9,6 +9,8 @@
 #' @return vector of values
 #' @export
 #' 
+#' @importFrom Rdpack reprompt
+#' 
 #' @examples 
 #' # direct label prediction
 #' 
@@ -24,14 +26,14 @@ qucl=function(x,A=diag(ncol(x)),b=rep(0,ncol(x)),c=0){
 #' @param nor which norm to constrain
 #' 
 #' @return the matrix in the convex set closest in norm \code{nor} to \code{X}
+#' @import CVXR
 #' @export
-
 qproj=function(X,a,C=diag(nrow=nrow(X),ncol=ncol(X)),nor=c('nuc',1,2,'inf','fro')){
-  A=CVXR::Variable(nrow(X),ncol(X),symmetric=T)
-  obj=CVXR::cvxr_norm(X-A,'nuc') #any norm can be used
-  constr=list(CVXR::cvxr_norm(C%*%A%*%C,nor[1])<=a) #any norm can be used
-  prob=CVXR::Problem(CVXR::Minimize(obj),c(constr))
-  result=CVXR::solve(prob)[[1]] #quadratic classifier matrix
+  A=Variable(nrow(X),ncol(X),symmetric=T)
+  obj=cvxr_norm(X-A,'nuc') #any norm can be used
+  constr=list(cvxr_norm(C%*%A%*%C,nor[1])<=a) #any norm can be used
+  prob=Problem(Minimize(obj),c(constr))
+  result=solve(prob)[[1]] #quadratic classifier matrix
   result
 }
 
