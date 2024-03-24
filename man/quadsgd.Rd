@@ -7,15 +7,16 @@
 quadsgd(
   x,
   y,
-  B = diag(ncol(x)),
+  B,
   g = 0.5,
   epoch = 2,
-  alpha = 1,
+  alpha = 0.1,
   A = diag(0, nrow(B)),
   b = rep(0, nrow(B)),
   c = 0,
   a = 3,
-  nor = c("nuc", 1, 2, "inf", "fro")
+  nor = c("nuc", 1, 2, "inf", "fro"),
+  skew = T
 )
 }
 \arguments{
@@ -37,9 +38,11 @@ quadsgd(
 
 \item{c}{constant with which to initialise SGD}
 
-\item{a}{norm-constraint for the matrix in the quadratic boundary}
+\item{a}{norm-constraint of the convex set}
 
-\item{nor}{which norm to constrain}
+\item{nor}{which norm to constrain; defaults to nuclear}
+
+\item{skew}{whether to skew the compressed class or not}
 }
 \value{
 list containing the following elements

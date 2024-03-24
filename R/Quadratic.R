@@ -11,7 +11,7 @@
 #' 
 #' @importFrom Rdpack reprompt
 #' 
-#' @examples 
+#' @examples
 #' # direct label prediction
 #' 
 #' sign(qucl(matrix(rnorm(500),5)))
@@ -21,19 +21,19 @@ qucl=function(x,A=diag(ncol(x)),b=rep(0,ncol(x)),c=0){
 
 #' Convex optimization for projection onto convex set using CVXR.
 #' @param X matrix to be projected onto convex set
-#' @param C inverse matrix that skews the convex set
 #' @param a norm-constraint of the convex set
-#' @param nor which norm to constrain
+#' @param nor which norm to constrain; defaults to nuclear
+#' @param C inverse of the matrix that skews the convex set; defaults to no skew
 #' 
 #' @return the matrix in the convex set closest in norm \code{nor} to \code{X}
 #' @import CVXR
 #' @export
-qproj=function(X,a,C=diag(nrow=nrow(X),ncol=ncol(X)),nor=c('nuc',1,2,'inf','fro')){
+qproj=function(X,a=1,nor=c('nuc',1,2,'inf','fro'),C=diag(ncol(X))){
   A=Variable(nrow(X),ncol(X),symmetric=T)
-  obj=cvxr_norm(X-A,'nuc') #any norm can be used
+  obj=cvxr_norm(X-A,nor[1])
   constr=list(cvxr_norm(C%*%A%*%C,nor[1])<=a) #any norm can be used
   prob=Problem(Minimize(obj),c(constr))
-  result=solve(prob)[[1]] #quadratic classifier matrix
+  result=solve(prob)[[1]] #matrix inside the convex set
   result
 }
 
@@ -70,8 +70,8 @@ smhingeder=function(x,g=.5){
 #' @param A matrix with which to initialise SGD
 #' @param b vector with which to initialise SGD
 #' @param c constant with which to initialise SGD
-#' @param a norm-constraint for the matrix in the quadratic boundary
-#' @param nor which norm to constrain
+#' @param skew whether to skew the compressed class or not
+#' @inheritParams qproj
 #' 
 #' @return list containing the following elements
 #' 
@@ -84,8 +84,12 @@ smhingeder=function(x,g=.5){
 #' \strong{`error`} empirical error of the trained quadratic classifier
 #' @export
 
-quadsgd=function(x,y,B=diag(ncol(x)),g=.5,epoch=2,alpha=1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),c=0,a=3,nor=c('nuc',1,2,'inf','fro')){
-  C=svd(B)$u%*%diag(1/svd(B)$d)%*%t(svd(B)$u) #matrix that skews quadratic class; or C=diag(nrow(B))
+quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),c=0,a=3,nor=c('nuc',1,2,'inf','fro'),skew=T){
+  if(skew==T){
+    C=svd(B)$u%*%diag(1/svd(B)$d)%*%t(svd(B)$u) #matrix that skews quadratic class
+  } else {
+    C=diag(nrow(B)) #no skew in the quadratic class
+  }
   x=x%*%t(B) #compress set
   error=NULL
   for(i in 1:epoch){
@@ -94,10 +98,9 @@ quadsgd=function(x,y,B=diag(ncol(x)),g=.5,epoch=2,alpha=1,A=diag(0,nrow(B)),b=re
       A=A-L*y[j]*x[j,]%*%t(x[j,]) #update matrix
       b=b-L*y[j]*x[j,] #update vector; remove line to train a homogeneous classifier
       c=c-L*y[j] #update constant; remove line to train a homogeneous classifier
-      Norm=npmr::nuclear(C%*%A%*%C) #base::norm(C%*%A%*%C,'') for other norms; remove C for no skew
+      Norm=npmr::nuclear(C%*%A%*%C) #base::norm(C%*%A%*%C,'') for other norms
       if(Norm>a){ #if A is out of feasible set
-        A=qproj(A,a,C,nor) #project A onto the feasible class and print the time; remove C for no skew
-        cat('Epoch',i,'index',j,'had norm',Norm,'now has',npmr::nuclear(C%*%A%*%C),'\n')
+        A=qproj(A,a,nor,C) #project A onto the feasible class
       }
       error=c(error,sum(smhinge(y*qucl(x,A,b,c),g))/nrow(x)) #record error
     }

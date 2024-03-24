@@ -4,21 +4,16 @@
 \alias{qproj}
 \title{Convex optimization for projection onto convex set using CVXR.}
 \usage{
-qproj(
-  X,
-  a,
-  C = diag(nrow = nrow(X), ncol = ncol(X)),
-  nor = c("nuc", 1, 2, "inf", "fro")
-)
+qproj(X, a = 1, nor = c("nuc", 1, 2, "inf", "fro"), C = diag(ncol(X)))
 }
 \arguments{
 \item{X}{matrix to be projected onto convex set}
 
 \item{a}{norm-constraint of the convex set}
 
-\item{C}{inverse matrix that skews the convex set}
+\item{nor}{which norm to constrain; defaults to nuclear}
 
-\item{nor}{which norm to constrain}
+\item{C}{inverse of the matrix that skews the convex set; defaults to no skew}
 }
 \value{
 the matrix in the convex set closest in norm \code{nor} to \code{X}
