@@ -44,7 +44,6 @@ qproj=function(X,a=1,nor=c('nuc',1,2,'inf','fro'),C=diag(ncol(X))){
 #' 
 #' @return vector of values
 #' @export
-
 smhinge=function(x,g=.5){
   ((1-g<x)&(x<1))*(1-x)^2/(2*g)+(x<1-g)*(1-x-g/2)
 }
@@ -59,7 +58,6 @@ smhinge=function(x,g=.5){
 smhingeder=function(x,g=.5){
   ((1-g<x)&(x<1))*(x-1)/g-(x<1-g)
 }
-
 #' Train quadratic classifier under projection with SGD
 #' @param x matrix whose rows are the instances
 #' @param y vector of labels
@@ -81,9 +79,8 @@ smhingeder=function(x,g=.5){
 #' 
 #' \strong{`c`} constant in the trained quadratic classifier
 #' 
-#' \strong{`error`} empirical error of the trained quadratic classifier
+#' \strong{`error`} sequence of empirical errors during the SGD
 #' @export
-
 quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),c=0,a=3,nor=c('nuc',1,2,'inf','fro'),skew=T){
   if(skew==T){
     C=svd(B)$u%*%diag(1/svd(B)$d)%*%t(svd(B)$u) #matrix that skews quadratic class
@@ -98,8 +95,7 @@ quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),
       A=A-L*y[j]*x[j,]%*%t(x[j,]) #update matrix
       b=b-L*y[j]*x[j,] #update vector; remove line to train a homogeneous classifier
       c=c-L*y[j] #update constant; remove line to train a homogeneous classifier
-      Norm=npmr::nuclear(C%*%A%*%C) #base::norm(C%*%A%*%C,'') for other norms
-      if(Norm>a){ #if A is out of feasible set
+      if(npmr::nuclear(C%*%A%*%C)>a){ #if A is out of feasible set
         A=qproj(A,a,nor,C) #project A onto the feasible class
       }
       error=c(error,sum(smhinge(y*qucl(x,A,b,c),g))/nrow(x)) #record error
