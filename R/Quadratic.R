@@ -83,7 +83,7 @@ smhingeder=function(x,g=.5){
 #' @export
 quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),c=0,a=3,nor=c('nuc',1,2,'inf','fro'),skew=T){
   if(skew==T){
-    C=svd(B)$u%*%diag(1/svd(B)$d)%*%t(svd(B)$u) #matrix that skews quadratic class
+    C=svd(B)$u%*%diag(svd(B)$d)%*%t(svd(B)$u) #matrix that skews quadratic class
   } else {
     C=diag(nrow(B)) #no skew in the quadratic class
   }
