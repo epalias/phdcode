@@ -45,7 +45,7 @@ qproj=function(X,a=1,nor=c('nuc',1,2,'inf','fro'),C=diag(ncol(X))){
 #' @return vector of values
 #' @export
 smhinge=function(x,g=.5){
-  ((1-g<x)&(x<1))*(1-x)^2/(2*g)+(x<1-g)*(1-x-g/2)
+  (((1-g)<x)&(x<1))*(1-x)^2/(2*g)+(x<=(1-g))*(1-x-g/2)
 }
 
 #' Derivative of smoothed hinge loss
@@ -56,7 +56,7 @@ smhinge=function(x,g=.5){
 #' @return vector of values
 #' @export
 smhingeder=function(x,g=.5){
-  ((1-g<x)&(x<1))*(x-1)/g-(x<1-g)
+  (((1-g)<x)&(x<1))*(x-1)/g+(x<=(1-g))*(-1)
 }
 #' Train quadratic classifier under projection with SGD
 #' @param x matrix whose rows are the instances
