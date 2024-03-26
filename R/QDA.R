@@ -1,33 +1,3 @@
-#' Sample uniformly \code{d} eigenvalues given largest eigenvalue and effective rank.
-#' 
-#' @param d number of dimensions
-#' @param l largest eigenvalue
-#' @param r desired effective rank
-#' 
-#' @return vector of eigenvalues with desired effective rank
-#' @export
-#' @examples
-#' #generates all ones
-#' 
-#' reff(5,1,5) 
-#' 
-#' #generates randomly
-#' 
-#' reff(5,1,3)
-#' 
-#' #generates all-but-one zeros
-#' 
-#' reff(5,1,1)
-reff=function(d,l,r){
-  if(r>=d){
-    rep(l,d)
-  }else if(r<=1){
-    c(l,rep(0,d-1))
-  }else{
-    c(l,rev(sort(Surrogate::RandVec(b=l,s=(r-1)*l,n=d-1)[[1]])))
-  }
-}
-
 #' Finite-sample Bhattacharyya bound between two Gaussians \code{0} and \code{1}.
 #'
 #' @param m0 true mean vector of Gaussian \code{0}
