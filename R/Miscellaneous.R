@@ -116,3 +116,25 @@ reff=function(d,l=1,r=d){
     c(l,rev(sort(Surrogate::RandVec(b=l,s=(r-1)*l,n=d-1)[[1]])))
   }
 }
+
+#' Create a \code{d*d} Walsh-Hadamard matrix.
+#' 
+#' @param d number of dimensions
+#'
+#' @return a \code{d*d} matrix with the Walsh-Hadamard property
+#' @export
+#' 
+#' @examples
+#' # 4*4 Walsh-Hadamard matrix
+#' 
+#' WHmat(4)
+#' 
+WHmat=function(d){
+  A=matrix(NA,d,d)
+  for(i in 1:d){
+    for(j in 1:d){
+      A[i,j]=(-1)^((as.numeric(intToBits(i-1))%*%as.numeric(intToBits(j-1)))%%2)/sqrt(d)
+    }
+  }
+  A
+}
