@@ -9,8 +9,7 @@ matplot=function(x){
   cx=length(unique(x[,1]))
   cy=length(unique(x[,2]))
   a=x[order(x[,1]),]
-  write.table(cbind(rep(1:cx,cy),rep(1:cy,each=cx),a[order(a[,2]),3]),
-              row.names=F,quote=F,col.names=F)
+  cbind(rep(1:cx,cy),rep(1:cy,each=cx),a[order(a[,2]),3])
 }
 #'
 #' Complex covariance matrix.
