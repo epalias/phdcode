@@ -79,7 +79,6 @@ smhingeder=function(x,g=.5){
 #' 
 #' \strong{`c`} constant in the trained quadratic classifier
 #' 
-#' \strong{`error`} sequence of empirical errors during the SGD
 #' @export
 quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),c=0,a=3,nor=c('nuc',1,2,'inf','fro'),skew=T){
   if(skew==T){
@@ -88,7 +87,6 @@ quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),
     C=diag(nrow(B)) #no skew in the quadratic class
   }
   x=x%*%t(B) #compress set
-  error=NULL
   for(i in 1:epoch){
     for(j in 1:nrow(x)){
       L=alpha*smhingeder(y[j]*qucl(x[j,],A,b,c),g)
@@ -98,8 +96,7 @@ quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),
       if(npmr::nuclear(C%*%A%*%C)>a){ #if A is out of feasible set
         A=qproj(A,a,nor,C) #project A onto the feasible class
       }
-      error=c(error,sum(smhinge(y*qucl(x,A,b,c),g))/nrow(x)) #record error
     }
   }
-  list(A=A,b=b,c=c,error=error) #quadratic classifier and sequence of errors
+  list(A=A,b=b,c=c) #quadratic classifier and sequence of errors
 }

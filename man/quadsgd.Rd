@@ -52,8 +52,6 @@ list containing the following elements
 \strong{\code{b}} vector in the trained quadratic classifier
 
 \strong{\code{c}} constant in the trained quadratic classifier
-
-\strong{\code{error}} sequence of empirical errors during the SGD
 }
 \description{
 Train quadratic classifier under projection with SGD
