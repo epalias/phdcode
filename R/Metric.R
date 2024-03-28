@@ -12,7 +12,15 @@ Metric=function(x,y,k=ncol(x),s=sort(sample(1:nrow(x),.8*nrow(x))),t=10,W=c('G',
   ytest=y[-s] #test labels
   if('G' %in% W){
     a1=rep(NA,t) #test errors of R1 with metric
-    b1=rep(NA,t) #test errors of R2 with metric
+    b1=rep(NA,t) #test errors of R1 with metric
+    a2=rep(NA,t) #test errors of R2 with metric
+    b2=rep(NA,t) #test errors of R2 with metric
+    a3=rep(NA,t) #test errors of R3 with metric
+    b3=rep(NA,t) #test errors of R3 with metric
+    a4=rep(NA,t) #test errors of R4 with metric
+    b4=rep(NA,t) #test errors of R4 with metric
+    a5=rep(NA,t) #test errors of R5 with metric
+    b5=rep(NA,t) #test errors of R5 with metric
     for(i in 1:t){
       R1=matrix(stats::rnorm(ncol(x)*k),k)/sqrt(k) #Gaussian random matrix (Dasgupta and Gupta, 2003)
       x1=x%*%t(R1) #compress original data set with R1
@@ -24,8 +32,6 @@ Metric=function(x,y,k=ncol(x),s=sort(sample(1:nrow(x),.8*nrow(x))),t=10,W=c('G',
     }
   }
   if('O' %in% W){
-    a2=rep(NA,t) #test errors of R1 with metric
-    b2=rep(NA,t) #test errors of R2 with metric
     for(i in 1:t){
       R2=pracma::randortho(ncol(x))[1:k,] #random orthogonal
       x2=x%*%t(R2) #compress original data set with R2
@@ -37,8 +43,6 @@ Metric=function(x,y,k=ncol(x),s=sort(sample(1:nrow(x),.8*nrow(x))),t=10,W=c('G',
     }
   }
   if('B' %in% W){
-    a3=rep(NA,t) #test errors of R1 with metric
-    b3=rep(NA,t) #test errors of R2 with metric
     for(i in 1:t){
       R3=matrix(sample(-1:1,ncol(x)*k,T,c(1/6,2/3,1/6)),k) #JL with binary coins II (Achlioptas, 2003)
       x3=x%*%t(R3) #compress original data set with R3
@@ -50,8 +54,6 @@ Metric=function(x,y,k=ncol(x),s=sort(sample(1:nrow(x),.8*nrow(x))),t=10,W=c('G',
     }
   }
   if('F' %in% W){
-    a4=rep(NA,t) #test errors of R1 with metric
-    b4=rep(NA,t) #test errors of R2 with metric
     for(i in 1:t){
       R4=min(log(nrow(x))^2/ncol(x),1); R4=(matrix(sample(0:1,ncol(x)*k,T,c(R4,1-R4)),k)*matrix(stats::rnorm(ncol(x)*k),k))%*%WHmat(ncol(x))%*%diag(sample(c(-1,1),ncol(x),T)) #fast JL transform (Ailon and Chazelle, 2009)
       x4=x%*%t(R4) #compress original data set with R4
@@ -63,8 +65,6 @@ Metric=function(x,y,k=ncol(x),s=sort(sample(1:nrow(x),.8*nrow(x))),t=10,W=c('G',
     }
   }
   if('C' %in% W){
-    a5=rep(NA,t) #test errors of R1 with metric
-    b5=rep(NA,t) #test errors of R2 with metric
     for(i in 1:t){
       R5=stats::rnorm(ncol(x)); R5=pracma::Toeplitz(R5[c(1,ncol(x):(ncol(x)-k+2))],R5)%*%diag(sample(c(-1,1),ncol(x),T))/sqrt(k) #circulant transform (Hinrichs and Vybíral, 2011) and (Freksen and Larsen, 2020)
       x5=x%*%t(R5) #compress original data set with R5

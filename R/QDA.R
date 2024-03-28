@@ -35,17 +35,17 @@ qdaresult=function(m0,S0,m1,S1,p0=.5,p1=.5,l=.5,n=10,N=100,t=1000){
   c=rep(0,t)
   rep(bhatbound(m0,S0,m0,S0,m1,S1,p0,p1,l),t)
   for(i in 1:t){
-    x0=mvtnorm::rmvnorm(n,m0,S0) #training sample
-    x1=mvtnorm::rmvnorm(n,m1,S1) #training sample
+    x0=rmvnorm(n,m0,S0) #training sample
+    x1=rmvnorm(n,m1,S1) #training sample
     m0hat=apply(x0,2,mean)
     m1hat=apply(x1,2,mean)
     S0hat=stats::cov(x0)
     S1hat=stats::cov(x1)
     a[i]=bhatbound(m0,S0,m0hat,S0hat,m1hat,S1hat,p0,p1,l)
     b[i]=bhatbound(m0hat,S0hat,m0hat,S0hat,m1hat,S1hat,p0,p1,l)
-    x0test=mvtnorm::rmvnorm(N,m0,S0) #test sample
+    x0test=rmvnorm(N,m0,S0) #test sample
     for(j in 1:N){
-      c[i]=c[i]+(mvtnorm::dmvnorm(x0test[j,],m0hat,S0hat)<mvtnorm::dmvnorm(x0test[j,],m1hat,S1hat))/N
+      c[i]=c[i]+(dmvnorm(x0test[j,],m0hat,S0hat)<dmvnorm(x0test[j,],m1hat,S1hat))/N
     }
   }
   cbind(B=rep(bhatbound(m0,S0,m0,S0,m1,S1,l),t),Bt=a,Be=b,P=c)

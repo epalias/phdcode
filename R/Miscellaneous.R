@@ -39,9 +39,10 @@ pcov=function(x){
 #' @param C covariance matrix of the distribution
 #' @param P pseudo-covariance matrix of the distribution
 #' 
+#' @import mvtnorm
 #' @return matrix whose rows are the sampled vectors
 rcmnorm=function(n,m,C,P){
-  x=mvtnorm::rmvnorm(n,c(Re(m),Im(m)),
+  x=rmvnorm(n,c(Re(m),Im(m)),
             .5*rbind(cbind(Re(C)+Re(P),-Im(C)+Im(P)),cbind(Im(C)+Im(P),Re(C)-Re(P))))
   x[,1:ncol(C)]+1i*x[,(ncol(C)+1):(2*ncol(C))]
 }
@@ -93,6 +94,7 @@ vecperm=function(m,n){
 #' @param l largest eigenvalue
 #' @param r desired effective rank
 #' 
+#' @import Surrogate
 #' @return vector of eigenvalues with desired effective rank
 #' @export
 #' @examples
@@ -113,7 +115,7 @@ reff=function(d,l=1,r=d){
   }else if(r<=1){
     c(l,rep(0,d-1))
   }else{
-    c(l,rev(sort(Surrogate::RandVec(b=l,s=(r-1)*l,n=d-1)[[1]])))
+    c(l,rev(sort(RandVec(b=l,s=(r-1)*l,n=d-1)[[1]])))
   }
 }
 
