@@ -14,7 +14,6 @@ Imports:
     class,
     pracma,
     CVXR,
-    npmr,
     Rdpack (>= 0.7)
 RdMacros: Rdpack
 License: MIT + file LICENSE
