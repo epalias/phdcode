@@ -90,12 +90,9 @@ quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),
   for(i in 1:epoch){
     for(j in 1:nrow(x)){
       L=alpha*smhingeder(y[j]*qucl(x[j,],A,b,c),g)
-      A=A-L*y[j]*x[j,]%*%t(x[j,]) #update matrix
+      A=qproj(A-L*y[j]*x[j,]%*%t(x[j,]),a,nor,C) #update matrix and project to quadratic class
       b=b-L*y[j]*x[j,] #update vector; remove line to train a homogeneous classifier
       c=c-L*y[j] #update constant; remove line to train a homogeneous classifier
-      if(npmr::nuclear(C%*%A%*%C)>a){ #if A is out of feasible set
-        A=qproj(A,a,nor,C) #project A onto the feasible class
-      }
     }
   }
   list(A=A,b=b,c=c) #quadratic classifier and sequence of errors
