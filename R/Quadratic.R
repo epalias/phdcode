@@ -105,7 +105,7 @@ quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(nrow(B)),b=rep(0,nrow(B)),c=
   x=x%*%t(B) #compress set
   for(i in 1:epoch){
     for(j in 1:nrow(x)){
-      L=alpha*smhingeder(y[j]*qucl(x[j,],A,b,c),g)
+      L=alpha*smhingeder(y[j]*qucl(x[j,,drop=F],A,b,c),g)
       A=qproj(A-L*y[j]*x[j,]%*%t(x[j,]),a,nor,C) #update matrix and project onto quadratic class
       b=b-L*y[j]*x[j,] #update vector; remove line to train a homogeneous classifier
       c=c-L*y[j] #update constant; remove line to train a homogeneous classifier
