@@ -50,7 +50,7 @@ vproj=function(X,a=1,nor=Inf,C=rep(1,length(X))){
   obj=p_norm(X-A,nor)
   constr=list(p_norm(C*A,nor)<=a) #any norm can be used
   prob=Problem(Minimize(obj),c(constr))
-  result=solve(prob)[[1]] #matrix inside the convex set
+  result=c(solve(prob)[[1]]) #vector inside the convex set
   result
 }
 #' Smoothed hinge loss
