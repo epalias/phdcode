@@ -11,10 +11,10 @@ quadsgd(
   g = 0.5,
   epoch = 2,
   alpha = 0.1,
-  A = diag(0, nrow(B)),
+  A = diag(nrow(B)),
   b = rep(0, nrow(B)),
   c = 0,
-  a = 3,
+  a = 1,
   nor = c("nuc", 1, 2, "inf", "fro"),
   skew = T
 )

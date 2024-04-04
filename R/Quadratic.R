@@ -80,7 +80,7 @@ smhingeder=function(x,g=.5){
 #' \strong{`c`} constant in the trained quadratic classifier
 #' 
 #' @export
-quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(0,nrow(B)),b=rep(0,nrow(B)),c=0,a=3,nor=c('nuc',1,2,'inf','fro'),skew=T){
+quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(nrow(B)),b=rep(0,nrow(B)),c=0,a=1,nor=c('nuc',1,2,'inf','fro'),skew=T){
   if(skew==T){
     C=svd(B)$u%*%diag(svd(B)$d)%*%t(svd(B)$u) #matrix that skews quadratic class
   } else {
