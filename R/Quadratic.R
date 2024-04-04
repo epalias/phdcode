@@ -19,10 +19,10 @@ qucl=function(x,A=diag(ncol(x)),b=rep(0,ncol(x)),c=0){
   c(apply(x*x%*%A,1,sum)+x%*%b+c)
 }
 
-#' Convex optimization for projection onto convex set using CVXR.
+#' CVXR for projection of matrix onto convex set.
 #' @param X matrix to be projected onto convex set
 #' @param a norm-constraint of the convex set
-#' @param nor which norm to constrain; defaults to nuclear
+#' @param nor which matrix-norm to constrain; defaults to nuclear
 #' @param C inverse of the matrix that skews the convex set; defaults to no skew
 #' 
 #' @return the matrix in the convex set closest in norm \code{nor} to \code{X}
@@ -37,6 +37,22 @@ qproj=function(X,a=1,nor=c('nuc',1,2,'inf','fro'),C=diag(ncol(X))){
   result
 }
 
+#' CVXR for projection of vector onto convex set.
+#' @param X vector to be projected onto convex set
+#' @param a norm-constraint of the convex set
+#' @param nor which p-norm to constrain; defaults to infinity
+#' @param C inverse of the vector that skews the convex set; defaults to no skew
+#' 
+#' @return the vector in the convex set closest in norm \code{nor} to \code{X}
+#' @export
+vproj=function(X,a=1,nor=Inf,C=rep(1,length(X))){
+  A=Variable(length(X))
+  obj=p_norm(X-A,nor)
+  constr=list(p_norm(C*A,nor)<=a) #any norm can be used
+  prob=Problem(Minimize(obj),c(constr))
+  result=solve(prob)[[1]] #matrix inside the convex set
+  result
+}
 #' Smoothed hinge loss
 #'
 #' @param x input vector
@@ -90,7 +106,7 @@ quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(nrow(B)),b=rep(0,nrow(B)),c=
   for(i in 1:epoch){
     for(j in 1:nrow(x)){
       L=alpha*smhingeder(y[j]*qucl(x[j,],A,b,c),g)
-      A=qproj(A-L*y[j]*x[j,]%*%t(x[j,]),a,nor,C) #update matrix and project to quadratic class
+      A=qproj(A-L*y[j]*x[j,]%*%t(x[j,]),a,nor,C) #update matrix and project onto quadratic class
       b=b-L*y[j]*x[j,] #update vector; remove line to train a homogeneous classifier
       c=c-L*y[j] #update constant; remove line to train a homogeneous classifier
     }

@@ -40,7 +40,7 @@ quadsgd(
 
 \item{a}{norm-constraint of the convex set}
 
-\item{nor}{which norm to constrain; defaults to nuclear}
+\item{nor}{which matrix-norm to constrain; defaults to nuclear}
 
 \item{skew}{whether to skew the compressed class or not}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/Quadratic.R
 \name{qproj}
 \alias{qproj}
-\title{Convex optimization for projection onto convex set using CVXR.}
+\title{CVXR for projection of matrix onto convex set.}
 \usage{
 qproj(X, a = 1, nor = c("nuc", 1, 2, "inf", "fro"), C = diag(ncol(X)))
 }
@@ -11,7 +11,7 @@ qproj(X, a = 1, nor = c("nuc", 1, 2, "inf", "fro"), C = diag(ncol(X)))
 
 \item{a}{norm-constraint of the convex set}
 
-\item{nor}{which norm to constrain; defaults to nuclear}
+\item{nor}{which matrix-norm to constrain; defaults to nuclear}
 
 \item{C}{inverse of the matrix that skews the convex set; defaults to no skew}
 }
@@ -19,5 +19,5 @@ qproj(X, a = 1, nor = c("nuc", 1, 2, "inf", "fro"), C = diag(ncol(X)))
 the matrix in the convex set closest in norm \code{nor} to \code{X}
 }
 \description{
-Convex optimization for projection onto convex set using CVXR.
+CVXR for projection of matrix onto convex set.
 }
