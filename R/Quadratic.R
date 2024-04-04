@@ -95,5 +95,5 @@ quadsgd=function(x,y,B,g=.5,epoch=2,alpha=.1,A=diag(nrow(B)),b=rep(0,nrow(B)),c=
       c=c-L*y[j] #update constant; remove line to train a homogeneous classifier
     }
   }
-  list(A=A,b=b,c=c) #quadratic classifier and sequence of errors
+  list(A=A,b=b,c=c) #output trained quadratic classifier
 }
