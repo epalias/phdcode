@@ -2,7 +2,7 @@
 % Please edit documentation in R/Quadratic.R
 \name{qproj}
 \alias{qproj}
-\title{CVXR for projection of matrix onto convex set.}
+\title{Projection of matrix onto convex set with \code{CVXR}.}
 \usage{
 qproj(X, a = 1, nor = c("nuc", 1, 2, "inf", "fro"), C = diag(ncol(X)))
 }
@@ -19,5 +19,5 @@ qproj(X, a = 1, nor = c("nuc", 1, 2, "inf", "fro"), C = diag(ncol(X)))
 the matrix in the convex set closest in norm \code{nor} to \code{X}
 }
 \description{
-CVXR for projection of matrix onto convex set.
+Projection of matrix onto convex set with \code{CVXR}.
 }

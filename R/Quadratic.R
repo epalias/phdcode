@@ -1,4 +1,18 @@
-###functions
+#' Append a set with its quadratic terms
+#' @param x matrix whose rows are the instances
+#' 
+#' @return matrix containing `x` with its quadratic terms
+#' @export
+#' 
+quadappend=function(x){
+  d=ncol(x)
+  for(i in 1:d){
+    for(j in i:d){
+      x=cbind(x,x[,i]*x[,j])
+    }
+  }
+  x
+}
 
 #' Value of quadratic classifier for all instances.
 #' @param x matrix whose rows are the instances
@@ -19,7 +33,45 @@ qucl=function(x,A=diag(ncol(x)),b=rep(0,ncol(x)),c=0){
   c(apply(x*x%*%A,1,sum)+x%*%b+c)
 }
 
-#' CVXR for projection of matrix onto convex set.
+#' Half-space classification with `CVXR`.
+#' @param x matrix whose rows are the instances
+#' @param y vector of labels
+#' @param p p-norm of the regularisation vector; usually set to 1 or 2
+#' @param C regularisation parameter; usually set from 2 to 10
+#' 
+#' @export 
+#' @return vector containing the constant term that points to class `1`
+
+perceptron=function(x,y,p=1,C=10){
+  w=Variable(ncol(x)+1)
+  z=Variable(nrow(x))
+  obj=p_norm(w)/2+C*p_norm(z,p)^p
+  constr=list(cbind(x*y,y)%*%w>=rep(1,nrow(x))-z,z>=rep(0,nrow(x)))
+  prob=Problem(Minimize(obj), constr)
+  r=c(solve(prob)$getValue(w))
+  r
+}
+
+#' Reconstruct matrix from vector.
+#' @param x is the vector containing the cross terms
+#' 
+#' @export
+#' @return a matrix
+vec2mat=function(x){
+  d=floor(sqrt(2*length(x)))
+  A=diag(x[1:d])
+  m=d
+  for(i in 1:(d-1)){
+    for(j in (i+1):d){
+      m=m+1
+      A[i,j]=x[m]/2
+      A[j,i]=x[m]/2
+    }
+  }
+  A
+}
+
+#' Projection of matrix onto convex set with `CVXR`.
 #' @param X matrix to be projected onto convex set
 #' @param a norm-constraint of the convex set
 #' @param nor which matrix-norm to constrain; defaults to nuclear
