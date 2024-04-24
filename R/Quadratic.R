@@ -38,15 +38,16 @@ qucl=function(x,A=diag(ncol(x)),b=rep(0,ncol(x)),c=0){
 #' @param y vector of labels
 #' @param p p-norm of the regularisation vector; usually set to 1 or 2
 #' @param C regularisation parameter; usually set from 2 to 10
+#' @inheritParams qproj
 #' 
 #' @export 
 #' @return vector containing the constant term that points to class `1`
 
-perceptron=function(x,y,p=1,C=10){
+halfspace=function(x,y,p=1,C=10,a=1){
   w=Variable(ncol(x)+1)
   z=Variable(nrow(x))
   obj=p_norm(w)/2+C*p_norm(z,p)^p
-  constr=list(cbind(x*y,y)%*%w>=rep(1,nrow(x))-z,z>=rep(0,nrow(x)))
+  constr=list(cbind(x*y,y)%*%w>=rep(1,nrow(x))-z,z>=rep(0,nrow(x)),cvxr_norm(w,2)<=a)
   prob=Problem(Minimize(obj), constr)
   r=c(solve(prob)$getValue(w))
   r
