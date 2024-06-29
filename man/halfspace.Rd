@@ -17,7 +17,7 @@ halfspace(x, y, p = 1, C = 10, a = 1, A = diag(ncol(x) + 1))
 
 \item{a}{norm-constraint of the convex set}
 
-\item{A}{is the matrix that skewes the constraint}
+\item{A}{is the matrix that skews the quadratic class}
 }
 \value{
 vector containing the constant term that points to class \code{1}
