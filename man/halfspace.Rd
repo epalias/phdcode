@@ -4,7 +4,7 @@
 \alias{halfspace}
 \title{Half-space classification with \code{CVXR}.}
 \usage{
-halfspace(x, y, p = 1, C = 10, a = 1)
+halfspace(x, y, p = 1, C = 10, a = 1, A = diag(ncol(x)))
 }
 \arguments{
 \item{x}{matrix whose rows are the instances}
@@ -16,6 +16,8 @@ halfspace(x, y, p = 1, C = 10, a = 1)
 \item{C}{regularisation parameter; usually set from 2 to 10}
 
 \item{a}{norm-constraint of the convex set}
+
+\item{A}{is the matrix that skewes the constraint}
 }
 \value{
 vector containing the constant term that points to class \code{1}
