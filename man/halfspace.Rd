@@ -4,7 +4,7 @@
 \alias{halfspace}
 \title{Half-space classification with \code{CVXR}.}
 \usage{
-halfspace(x, y, p = 1, C = 10, a = 1, A = diag(ncol(x)))
+halfspace(x, y, p = 1, C = 10, a = 1, A = diag(ncol(x) + 1))
 }
 \arguments{
 \item{x}{matrix whose rows are the instances}

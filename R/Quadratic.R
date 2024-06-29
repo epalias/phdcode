@@ -44,7 +44,7 @@ qucl=function(x,A=diag(ncol(x)),b=rep(0,ncol(x)),c=0){
 #' @export 
 #' @return vector containing the constant term that points to class `1`
 
-halfspace=function(x,y,p=1,C=10,a=1,A=diag(ncol(x))){
+halfspace=function(x,y,p=1,C=10,a=1,A=diag(ncol(x)+1)){
   w=Variable(ncol(x)+1)
   z=Variable(nrow(x))
   obj=p_norm(w)/2+C*p_norm(z,p)^p
