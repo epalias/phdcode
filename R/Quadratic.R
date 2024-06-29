@@ -43,11 +43,11 @@ qucl=function(x,A=diag(ncol(x)),b=rep(0,ncol(x)),c=0){
 #' @export 
 #' @return vector containing the constant term that points to class `1`
 
-halfspace=function(x,y,p=1,C=10,a=1){
+halfspace=function(x,y,p=1,C=10,a=1,A=diag(ncol(x))){
   w=Variable(ncol(x)+1)
   z=Variable(nrow(x))
   obj=p_norm(w)/2+C*p_norm(z,p)^p
-  constr=list(cbind(x*y,y)%*%w>=rep(1,nrow(x))-z,z>=rep(0,nrow(x)),cvxr_norm(w,2)<=a)
+  constr=list(cbind(x*y,y)%*%w>=rep(1,nrow(x))-z,z>=rep(0,nrow(x)),cvxr_norm(A%*%w,2)<=a)
   prob=Problem(Minimize(obj), constr)
   r=c(solve(prob)$getValue(w))
   r
