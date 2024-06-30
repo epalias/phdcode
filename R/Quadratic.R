@@ -36,18 +36,18 @@ qucl=function(x,A=diag(ncol(x)),b=rep(0,ncol(x)),c=0){
 #' Half-space classification with `CVXR`.
 #' @param x matrix whose rows are the instances
 #' @param y vector of labels
+#' @param A is the matrix that skews the hypothesis class
 #' @param p p-norm of the regularisation vector; usually set to 1 or 2
-#' @param C regularisation parameter; usually set from 2 to 10
-#' @param A is the matrix that skews the quadratic class
+#' @param l regularisation parameter; usually set from 2 to 10
 #' @inheritParams qproj
 #' 
 #' @export 
 #' @return vector containing the constant term that points to class `1`
 
-halfspace=function(x,y,p=1,C=10,a=1,A=diag(ncol(x)+1)){
+halfspace=function(x,y,p=1,A=diag(ncol(x)+1),l=10,a=1){
   w=Variable(ncol(x)+1)
   z=Variable(nrow(x))
-  obj=p_norm(w)/2+C*p_norm(z,p)^p
+  obj=.5*p_norm(w)^2+l*p_norm(z,p)^p
   constr=list(cbind(x*y,y)%*%w>=rep(1,nrow(x))-z,z>=rep(0,nrow(x)),cvxr_norm(A%*%w,2)<=a)
   prob=Problem(Minimize(obj),constr)
   r=c(solve(prob)$getValue(w))

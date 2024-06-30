@@ -4,7 +4,7 @@
 \alias{halfspace}
 \title{Half-space classification with \code{CVXR}.}
 \usage{
-halfspace(x, y, p = 1, C = 10, a = 1, A = diag(ncol(x) + 1))
+halfspace(x, y, p = 1, A = diag(ncol(x) + 1), l = 10, a = 1)
 }
 \arguments{
 \item{x}{matrix whose rows are the instances}
@@ -13,11 +13,11 @@ halfspace(x, y, p = 1, C = 10, a = 1, A = diag(ncol(x) + 1))
 
 \item{p}{p-norm of the regularisation vector; usually set to 1 or 2}
 
-\item{C}{regularisation parameter; usually set from 2 to 10}
+\item{A}{is the matrix that skews the hypothesis class}
+
+\item{l}{regularisation parameter; usually set from 2 to 10}
 
 \item{a}{norm-constraint of the convex set}
-
-\item{A}{is the matrix that skews the quadratic class}
 }
 \value{
 vector containing the constant term that points to class \code{1}
